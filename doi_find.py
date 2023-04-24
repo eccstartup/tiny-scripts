@@ -1,15 +1,17 @@
 import requests
 
 
-def get_doi(title):
+def get_doi(title, author=None):
     url = "https://api.crossref.org/works"
     params = {
-        "query.title": title,
-        "rows": 1
+        "query.title": '+'.join(title.lower().split()),
+        "query.author": '+'.join(author.lower().split()) if author else None,
+        "rows": 10
     }
     r = requests.get(url, params=params)
-    print(r.json())
+    # print(r.json())
     data = r.json()["message"]
+    print(data["total-results"])
     if data["total-results"] > 0:
         doi = data["items"][0]["URL"]
         print(f"Found DOI for {title}: {doi}")
@@ -20,5 +22,6 @@ def get_doi(title):
 
 
 if __name__ == "__main__":
-    title = '联邦学习系统攻击与防御技术研究综述'
-    doi = get_doi(title)
+    title = 'Differential Neural Networks (DNN)'
+    author = 'SERGIO LEDESMA'
+    doi = get_doi(title, author)
