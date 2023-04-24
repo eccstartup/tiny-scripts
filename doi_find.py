@@ -4,7 +4,7 @@ import requests
 def get_doi(title):
     url = "https://api.crossref.org/works"
     params = {
-        "query": title,
+        "query.title": title,
         "rows": 1
     }
     r = requests.get(url, params=params)
